@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Enclo — Your AI Memory Capsule</title>
+<meta name="description" content="Save AI chats, links, notes, and videos. Find anything in seconds. Free, private, local-first."/>
+<meta property="og:title" content="Enclo — Your AI Memory Capsule"/>
+<meta property="og:description" content="One capsule for every AI conversation, link, and note you've ever saved."/>
+<meta property="og:url" content="https://getenclo.web.app"/>
+<meta name="theme-color" content="#0A0A0A"/>
+<link rel="icon" type="image/svg+xml" href="enclo-icon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--black:#0A0A0A;--white:#FFFFFF;--blue:#0052FF;--blue-dk:#003FCC;
+--blue-lt:#EEF3FF;--blue-mid:#DAEAFF;
+--gray-50:#F8F8F8;--gray-100:#F0F0F0;--gray-200:#E0E0E0;
+--gray-400:#AAAAAA;--gray-600:#666666;--gray-800:#222222;
+--fd:'Times New Roman',Times,serif;
+--fm:'DM Mono','Courier New',monospace;
+--fs:system-ui,-apple-system,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--black);font-family:var(--fs);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--black);color:var(--gray-400);font-family:var(--fm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 48px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.topbar-left{display:flex;align-items:center;gap:20px}
+.topbar-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;display:inline-block;margin-right:6px;animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-200);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-glyph{width:30px;height:30px;background:var(--black);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--white);font-family:var(--fm);font-size:14px;font-weight:500}
+.nav-name{font-family:var(--fm);font-size:15px;font-weight:500;color:var(--black);letter-spacing:-.01em}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{font-family:var(--fm);font-size:11px;color:var(--gray-600);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .15s}
+.nav-links a:hover{color:var(--black)}
+.nav-dl{font-family:var(--fm);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:var(--white);padding:9px 18px;border-radius:6px;text-decoration:none;transition:background .15s}
+.nav-dl:hover{background:var(--blue-dk)}
+
+/* ── SECTIONS BASE ── */
+section{padding:96px 48px}
+.inner{max-width:1120px;margin:0 auto}
+.sec-label{font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gray-400);display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.sec-label::after{content:'';flex:0 0 40px;height:1px;background:var(--gray-200)}
+.sec-num{font-family:var(--fm);font-size:10px;color:var(--blue);letter-spacing:.1em}
+h2{font-family:var(--fd);font-size:clamp(40px,5.5vw,64px);font-weight:400;line-height:1.05;letter-spacing:-.02em;color:var(--black);margin-bottom:24px}
+h2 em{font-style:italic;color:var(--blue)}
+.lead{font-family:var(--fs);font-size:18px;color:var(--gray-600);max-width:560px;line-height:1.65}
+.section-counter{font-family:var(--fm);font-size:10px;color:var(--gray-400);letter-spacing:.1em}
+
+/* ── HERO ── */
+.hero{padding:80px 48px 0;background:var(--white);border-bottom:1px solid var(--gray-200)}
+.hero-inner{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding-bottom:80px}
+.hero-meta{font-family:var(--fm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.hero-meta span{color:var(--gray-400)}
+h1{font-family:var(--fd);font-size:clamp(48px,6vw,80px);font-weight:400;line-height:1.02;letter-spacing:-.025em;color:var(--black);margin-bottom:24px}
+h1 em{font-style:italic}
+.hero-sub{font-size:18px;color:var(--gray-600);line-height:1.65;margin-bottom:40px;max-width:480px}
+.hero-btns{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.btn-dl-primary{display:flex;align-items:center;gap:10px;background:var(--black);color:var(--white);padding:14px 24px;border-radius:8px;text-decoration:none;font-family:var(--fm);font-size:12px;font-weight:500;letter-spacing:.05em;transition:background .15s,transform .1s}
+.btn-dl-primary:hover{background:var(--blue);transform:translateY(-1px)}
+.btn-dl-primary svg{width:16px;height:16px}
+.btn-dl-secondary{display:flex;align-items:center;gap:10px;background:var(--white);color:var(--black);padding:13px 22px;border-radius:8px;text-decoration:none;font-family:var(--fm);font-size:12px;font-weight:500;letter-spacing:.05em;border:1px solid var(--gray-200);transition:all .15s}
+.btn-dl-secondary:hover{border-color:var(--black);transform:translateY(-1px)}
+.hero-note{font-family:var(--fm);font-size:10px;color:var(--gray-400);letter-spacing:.1em}
+.hero-stats{display:flex;align-items:center;gap:32px;margin-top:40px;padding-top:40px;border-top:1px solid var(--gray-200)}
+.stat-item{}
+.stat-num{font-family:var(--fm);font-size:28px;font-weight:500;color:var(--black);display:block;line-height:1}
+.stat-lbl{font-family:var(--fm);font-size:10px;color:var(--gray-400);letter-spacing:.12em;text-transform:uppercase;display:block;margin-top:4px}
+
+/* ── HERO ILLUSTRATION ── */
+.hero-visual{position:relative}
+.hero-svg-wrap{border-radius:16px;overflow:hidden;line-height:0;box-shadow:0 4px 32px rgba(0,0,0,.08)}
+
+/* ── TICKER ── */
+.ticker-section{background:var(--black);padding:20px 0;overflow:hidden;border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a}
+.ticker-track{display:flex;gap:0;white-space:nowrap;animation:ticker-scroll 28s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.ticker-item{font-family:var(--fm);font-size:12px;font-weight:500;letter-spacing:.1em;color:var(--gray-400);padding:0 28px;display:flex;align-items:center;gap:10px}
+.ticker-item strong{color:var(--white)}
+.ticker-dot{color:#333;font-size:6px}
+@keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── ABOUT ── */
+.about-section{background:var(--white);border-bottom:1px solid var(--gray-200)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.about-right{padding-top:8px}
+.about-quote{font-family:var(--fd);font-size:clamp(22px,3vw,32px);font-weight:400;line-height:1.3;color:var(--black);font-style:italic;margin-bottom:32px;border-left:3px solid var(--blue);padding-left:24px}
+.about-body{font-size:16px;color:var(--gray-600);line-height:1.75;margin-bottom:20px}
+
+/* ── FEATURES ── */
+.features-section{background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+.features-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray-200);border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.feat-cell{background:var(--white);padding:36px 32px;transition:background .15s}
+.feat-cell:hover{background:var(--blue-lt)}
+.feat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.feat-n{font-family:var(--fm);font-size:10px;font-weight:500;color:var(--gray-400);letter-spacing:.2em}
+.feat-icon{width:36px;height:36px;border:1px solid var(--gray-200);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--gray-50)}
+.feat-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.feat-title{font-family:var(--fd);font-size:20px;font-weight:400;color:var(--black);margin-bottom:8px;line-height:1.2}
+.feat-desc{font-size:14px;color:var(--gray-600);line-height:1.65}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:var(--white);border-bottom:1px solid var(--gray-200)}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.steps-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:40px}
+.step-row{display:flex;align-items:flex-start;gap:20px;padding:28px 28px;border-bottom:1px solid var(--gray-200);transition:background .15s}
+.step-row:last-child{border-bottom:none}
+.step-row:hover{background:var(--gray-50)}
+.step-n-wrap{flex-shrink:0;width:36px;height:36px;background:var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.step-n-wrap.active{background:var(--blue)}
+.step-n{font-family:var(--fm);font-size:11px;font-weight:500;color:var(--white)}
+.step-content{}
+.step-title{font-family:var(--fd);font-size:18px;font-weight:400;color:var(--black);margin-bottom:4px}
+.step-desc{font-size:14px;color:var(--gray-600);line-height:1.6}
+.how-illustration{position:sticky;top:100px}
+
+/* ── PLATFORMS ── */
+.platforms-section{background:var(--black);border-bottom:1px solid #1a1a1a}
+.platforms-section .sec-label{color:#555}
+.platforms-section .sec-label::after{background:#1a1a1a}
+.platforms-section h2{color:var(--white)}
+.platforms-section h2 em{color:var(--blue)}
+.platforms-section .lead{color:#888}
+.platform-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px}
+.platform-card{border-radius:12px;padding:28px 24px;text-align:center;transition:all .2s;text-decoration:none;cursor:pointer}
+.platform-card.available{background:#111;border:1px solid #2a2a2a}
+.platform-card.available:hover{border-color:var(--blue);background:#0a0a1a}
+.platform-card.soon{background:#080808;border:1px dashed #1a1a1a;opacity:.7}
+.platform-illu{display:block;margin:0 auto 20px;width:80px;height:80px}
+.platform-name{font-family:var(--fm);font-size:14px;font-weight:500;color:var(--white);display:block;margin-bottom:6px}
+.platform-badge{display:inline-block;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:20px}
+.badge-live{background:rgba(0,82,255,.2);color:var(--blue);border:1px solid rgba(0,82,255,.3)}
+.badge-soon{background:#1a1a1a;color:#555;border:1px solid #222}
+.badge-june{background:rgba(34,197,94,.15);color:#22C55E;border:1px solid rgba(34,197,94,.3)}
+.cta-select{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:13px 16px;font-family:var(--fm);font-size:12px;color:var(--white);outline:none;cursor:pointer;transition:border-color .15s;appearance:none}
+.cta-select option{background:#0052FF;color:var(--white)}
+.cta-select:focus{border-color:rgba(255,255,255,.6)}
+
+/* ── STREMIT ── */
+.stremit-section{background:var(--blue-lt);border-bottom:1px solid var(--blue-mid)}
+.stremit-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.stremit-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);background:rgba(0,82,255,.08);border:1px solid rgba(0,82,255,.15);padding:6px 14px;border-radius:20px;margin-bottom:24px}
+.stremit-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.stremit-section h2{color:var(--black)}
+.stremit-section h2 em{color:var(--blue)}
+.stremit-section .lead{color:var(--gray-600)}
+.stremit-link{display:inline-flex;align-items:center;gap:6px;margin-top:32px;font-family:var(--fm);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(0,82,255,.3);padding-bottom:3px;transition:all .15s}
+.stremit-link:hover{border-color:var(--blue)}
+.api-features{display:flex;flex-direction:column;gap:0;border:1px solid var(--blue-mid);border-radius:12px;overflow:hidden;background:var(--white)}
+.api-row{display:flex;align-items:center;gap:16px;padding:18px 20px;border-bottom:1px solid var(--blue-mid)}
+.api-row:last-child{border-bottom:none}
+.api-row-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.api-row-icon.core{background:var(--blue);color:var(--white)}
+.api-row-icon.opt{background:var(--blue-lt);color:var(--blue)}
+.api-row-icon svg{width:14px;height:14px;fill:currentColor}
+.api-row-label{font-family:var(--fs);font-size:14px;color:var(--black);flex:1}
+.api-row-badge{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.badge-core{background:var(--blue);color:var(--white)}
+.badge-opt{background:var(--blue-lt);color:var(--blue)}
+
+/* ── FAQ ── */
+.faq-section{background:var(--white);border-bottom:1px solid var(--gray-200)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.faq-list{margin-top:16px}
+.faq-item{border-bottom:1px solid var(--gray-200)}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:var(--fd);font-size:18px;font-weight:400;color:var(--black);gap:16px}
+.faq-q:hover{color:var(--blue)}
+.faq-arrow{flex-shrink:0;width:18px;height:18px;border:1px solid var(--gray-200);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--gray-600)}
+.faq-arrow svg{width:10px;height:10px;transition:transform .2s}
+.faq-item.open .faq-arrow{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.faq-item.open .faq-arrow svg{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-a-inner{padding:0 0 20px;font-size:15px;color:var(--gray-600);line-height:1.7}
+.faq-item.open .faq-a{max-height:200px}
+.faq-illustration{position:sticky;top:100px}
+
+/* ── DOWNLOAD CTA ── */
+.cta-section{background:var(--blue);padding:96px 48px}
+.cta-inner{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.cta-section .sec-label{color:rgba(255,255,255,.5)}
+.cta-section .sec-label::after{background:rgba(255,255,255,.2)}
+.cta-section h2{color:var(--white)}
+.cta-section h2 em{color:rgba(255,255,255,.7);font-style:italic}
+.cta-section .lead{color:rgba(255,255,255,.75)}
+.cta-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
+.btn-cta-white{display:flex;align-items:center;gap:10px;background:var(--white);color:var(--blue);padding:14px 24px;border-radius:8px;text-decoration:none;font-family:var(--fm);font-size:12px;font-weight:500;letter-spacing:.05em;transition:all .15s}
+.btn-cta-white:hover{background:rgba(255,255,255,.9);transform:translateY(-1px)}
+.btn-cta-outline{display:flex;align-items:center;gap:10px;background:transparent;color:var(--white);padding:13px 22px;border-radius:8px;text-decoration:none;font-family:var(--fm);font-size:12px;font-weight:500;letter-spacing:.05em;border:1px solid rgba(255,255,255,.3);transition:all .15s}
+.btn-cta-outline:hover{border-color:rgba(255,255,255,.7);transform:translateY(-1px)}
+.cta-note{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;margin-top:16px}
+.cta-form{display:flex;flex-direction:column;gap:12px}
+.cta-label{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
+.cta-input-row{display:flex;gap:10px}
+.cta-input{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:13px 16px;font-family:var(--fm);font-size:13px;color:var(--white);outline:none;transition:border-color .15s}
+.cta-input::placeholder{color:rgba(255,255,255,.3)}
+.cta-input:focus{border-color:rgba(255,255,255,.6)}
+.btn-cta-submit{background:var(--white);color:var(--blue);border:none;border-radius:8px;padding:13px 20px;font-family:var(--fm);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-cta-submit:hover{background:rgba(255,255,255,.9)}
+.cta-success{display:none;font-family:var(--fd);font-size:20px;font-style:italic;color:var(--white);opacity:.9}
+
+/* ── FOOTER ── */
+footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a1a}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:56px}
+.footer-logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:16px;text-decoration:none}
+.footer-logo-name{font-family:var(--fm);font-size:14px;font-weight:500;color:var(--white)}
+.footer-about{font-size:13px;color:#555;line-height:1.65;max-width:280px}
+.footer-col-title{font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#444;margin-bottom:20px;display:block}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:#555;text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--white)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid #1a1a1a;flex-wrap:wrap;gap:16px}
+.footer-copy{font-family:var(--fm);font-size:10px;color:#333;letter-spacing:.08em}
+.footer-links-row{display:flex;gap:24px;list-style:none}
+.footer-links-row a{font-family:var(--fm);font-size:10px;color:#333;text-decoration:none;letter-spacing:.08em;transition:color .15s}
+.footer-links-row a:hover{color:#666}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .topbar{padding:8px 20px}.topbar-right{display:none}
+  nav{padding:0 20px}.nav-links{display:none}
+  section{padding:64px 20px}
+  .hero{padding:64px 20px 0}
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .hero-visual{display:none}
+  h1{font-size:44px}.h2{font-size:36px}
+  .about-grid,.how-grid,.stremit-inner,.faq-grid,.cta-inner,.footer-top{grid-template-columns:1fr;gap:48px}
+  .features-grid{grid-template-columns:1fr}
+  .platform-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .cta-section{padding:64px 20px}
+  footer{padding:48px 20px 32px}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span><span class="topbar-dot"></span>Launching June 2026</span>
+    <span>Free · No account required</span>
+  </div>
+  <div class="topbar-right">
+    <span>Android & Windows — June 2026 · iOS & macOS — Coming Soon</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#top" class="nav-logo">
+    <img src="enclo-icon.svg" width="30" height="30" style="border-radius:7px;display:block;flex-shrink:0" alt="Enclo"/>
+    <span class="nav-name">Enclo</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#platforms">Platforms</a></li>
+    <li><a href="#stremit">AI Features</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#waitlist" class="nav-dl">Join Waitlist →</a>
+</nav>
+
+<!-- I. HERO -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-meta">
+        <span class="sec-num">I · Hero</span>
+        <span>Save · Search · Share</span>
+        <span style="color:var(--gray-200)">001 / 008</span>
+      </div>
+      <h1>Your AI conversations,<br><em>never lost again.</em></h1>
+      <p class="hero-sub">One capsule for every AI chat, link, note, and video you've ever saved. Powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:.8">Stremit AI</a>. Local-first. Completely private.</p>
+      <div class="hero-btns">
+        <a href="#waitlist" class="btn-dl-primary">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
+          Join the Waitlist
+        </a>
+        <a href="#platforms" class="btn-dl-secondary">
+          View all platforms
+        </a>
+      </div>
+      <p class="hero-note">Android & Windows — June 2026 · iOS & macOS — Coming Soon · Free forever</p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">6</span>
+          <span class="stat-lbl">Features</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <span class="stat-lbl">Platforms</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">0</span>
+          <span class="stat-lbl">Servers</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">∞</span>
+          <span class="stat-lbl">Items</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Screenshot -->
+    <div class="hero-visual">
+      <div class="hero-svg-wrap">
+        <img src="hero-screenshot.png" alt="Enclo app screenshot" style="width:100%;display:block"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-section">
+  <div class="ticker-track">
+    <!-- First copy -->
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(120 12 12)"/></svg>
+      <strong>Claude</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="white" style="flex-shrink:0"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.182a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.776.776 0 0 0 .781 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855-5.773-3.331 2.014-1.164a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.104v-5.677a.79.79 0 0 0-.407-.667zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.376-3.454l-.141.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
+      <strong>ChatGPT</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="#4285F4"/><path d="M12 5 L13 10.5 L18 12 L13 13.5 L12 19 L11 13.5 L6 12 L11 10.5 Z" fill="#9C27B0" opacity="0.6"/></svg>
+      <strong>Gemini</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect x="1" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="1" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="9" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="17" width="7" height="6" rx="1" fill="#FF7000"/><rect x="9" y="17" width="7" height="6" rx="1" fill="#FF7000"/></svg>
+      <strong>Mistral</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" fill="white"/></svg>
+      <strong>Grok</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="7.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/><circle cx="16.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/></svg>
+      <strong>Llama</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect width="24" height="24" rx="5" fill="#1C3F5E"/><line x1="12" y1="3" x2="12" y2="21" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="7.5" x2="21" y2="16.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="16.5" x2="21" y2="7.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <strong>Perplexity</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#4E6EF2"/><path d="M6 15 C6 11 8.5 8 12 8 C15.5 8 18 11 18 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="9" cy="16" r="1.5" fill="white"/><circle cx="15" cy="16" r="1.5" fill="white"/></svg>
+      <strong>DeepSeek</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 A10 10 0 0 1 22 12" stroke="#CB43CC" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M22 12 A10 10 0 0 1 12 22" stroke="#EB5F32" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M12 22 A10 10 0 0 1 2 12" stroke="#F6B827" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M2 12 A10 10 0 0 1 12 2" stroke="#55C1EC" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+      <strong>Copilot</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="#7C4DFF"/></svg>
+      <strong>Gemma</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10" fill="#D97E5B"/><path d="M16 12 A4 4 0 1 0 8 12 L8 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M14.8 8.8 L16 12 L12.8 13.5" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <strong>Command R</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="11" cy="11" r="8.5" fill="none" stroke="#7B2FBE" stroke-width="2.5"/><line x1="17" y1="17" x2="21" y2="21" stroke="#7B2FBE" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <strong>Qwen</strong><span class="ticker-dot">●</span>
+    </span>
+    <!-- Second copy (seamless loop) -->
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(120 12 12)"/></svg>
+      <strong>Claude</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="white" style="flex-shrink:0"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.182a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.776.776 0 0 0 .781 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855-5.773-3.331 2.014-1.164a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.104v-5.677a.79.79 0 0 0-.407-.667zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.376-3.454l-.141.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
+      <strong>ChatGPT</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="#4285F4"/><path d="M12 5 L13 10.5 L18 12 L13 13.5 L12 19 L11 13.5 L6 12 L11 10.5 Z" fill="#9C27B0" opacity="0.6"/></svg>
+      <strong>Gemini</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect x="1" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="1" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="9" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="17" width="7" height="6" rx="1" fill="#FF7000"/><rect x="9" y="17" width="7" height="6" rx="1" fill="#FF7000"/></svg>
+      <strong>Mistral</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" fill="white"/></svg>
+      <strong>Grok</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="7.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/><circle cx="16.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/></svg>
+      <strong>Llama</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect width="24" height="24" rx="5" fill="#1C3F5E"/><line x1="12" y1="3" x2="12" y2="21" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="7.5" x2="21" y2="16.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="16.5" x2="21" y2="7.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <strong>Perplexity</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#4E6EF2"/><path d="M6 15 C6 11 8.5 8 12 8 C15.5 8 18 11 18 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="9" cy="16" r="1.5" fill="white"/><circle cx="15" cy="16" r="1.5" fill="white"/></svg>
+      <strong>DeepSeek</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 A10 10 0 0 1 22 12" stroke="#CB43CC" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M22 12 A10 10 0 0 1 12 22" stroke="#EB5F32" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M12 22 A10 10 0 0 1 2 12" stroke="#F6B827" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M2 12 A10 10 0 0 1 12 2" stroke="#55C1EC" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+      <strong>Copilot</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="#7C4DFF"/></svg>
+      <strong>Gemma</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10" fill="#D97E5B"/><path d="M16 12 A4 4 0 1 0 8 12 L8 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M14.8 8.8 L16 12 L12.8 13.5" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <strong>Command R</strong><span class="ticker-dot">●</span>
+    </span>
+    <span class="ticker-item">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="11" cy="11" r="8.5" fill="none" stroke="#7B2FBE" stroke-width="2.5"/><line x1="17" y1="17" x2="21" y2="21" stroke="#7B2FBE" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <strong>Qwen</strong><span class="ticker-dot">●</span>
+    </span>
+  </div>
+</div>
+
+<!-- II. ABOUT -->
+<section class="about-section" id="about">
+  <div class="inner">
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <div class="sec-label"><span class="sec-num">II · About</span><span>002 / 008</span></div>
+        <h2>We built Enclo because finding a past AI chat should take <em>seconds,</em> not hours.</h2>
+      </div>
+      <div class="about-right reveal">
+        <blockquote class="about-quote">"I spent 45 minutes looking for a conversation I had with Claude last week. Never again."</blockquote>
+        <p class="about-body">Enclo is a local-first mobile and desktop app that lets you save anything — AI conversations, social media links, articles, notes, and downloaded videos — into one private, searchable capsule.</p>
+        <p class="about-body">Nothing leaves your device. No account required. AI features are powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">Stremit</a> — seamlessly built into the app.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- III. FEATURES -->
+<section class="features-section" id="features">
+  <div class="inner">
+    <div class="features-header reveal">
+      <div>
+        <div class="sec-label"><span class="sec-num">III · Features</span><span>003 / 008</span></div>
+        <h2>Six tools.<br><em>One capsule.</em></h2>
+      </div>
+      <p class="lead" style="max-width:360px;text-align:right">Every feature designed around one principle: save once, find forever.</p>
+    </div>
+
+    <div class="features-grid reveal">
+
+      <div class="feat-cell">
+        <div class="feat-header">
+          <span class="feat-n">Nº 01</span>
+          <div class="feat-icon">
+            <!-- Chat bubble SVG -->
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+        </div>
+        <h3 class="feat-title">AI Chat Archive</h3>
+        <p class="feat-desc">Save conversations from Claude, ChatGPT, Gemini, Mistral, Grok, Llama, and any other model. Every chat is auto-tagged and summarized the moment you save it.</p>
+      </div>
+
+      <div class="feat-cell">
+        <div class="feat-header">
+          <span class="feat-n">Nº 02</span>
+          <div class="feat-icon">
+            <!-- Link SVG -->
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </div>
+        </div>
+        <h3 class="feat-title">Link Capsule</h3>
+        <p class="feat-desc">Save anything from Twitter, Reddit, YouTube, Instagram, LinkedIn, or any URL. Rich previews, auto-metadata, and AI summaries — no manual work required.</p>
+      </div>
+
+      <div class="feat-cell">
+        <div class="feat-header">
+          <span class="feat-n">Nº 03</span>
+          <div class="feat-icon">
+            <!-- Search SVG -->
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+        </div>
+        <h3 class="feat-title">Deep Search</h3>
+        <p class="feat-desc">Instant local search for speed. Enable Deep Search for AI-powered semantic matching — find content by meaning, not just exact keywords. Powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">Stremit</a>.</p>
+      </div>
+
+      <div class="feat-cell">
+        <div class="feat-header">
+          <span class="feat-n">Nº 04</span>
+          <div class="feat-icon">
+            <!-- Download SVG -->
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+        </div>
+        <h3 class="feat-title">Video Downloader</h3>
+        <p class="feat-desc">Download TikTok videos without watermark and Instagram reels directly. YouTube in HD. Save to capsule or device gallery — no third-party apps needed.</p>
+      </div>
+
+      <div class="feat-cell">
+        <div class="feat-header">
+          <span class="feat-n">Nº 05</span>
+          <div class="feat-icon">
+            <!-- Lock SVG -->
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+        <h3 class="feat-title">Offline & Private</h3>
+        <p class="feat-desc">All data stored locally in encrypted SQLite on your device. No server receives your content. No account required. Use the full capsule forever, for free.</p>
+      </div>
+
+      <div class="feat-cell">
+        <div class="feat-header">
+          <span class="feat-n">Nº 06</span>
+          <div class="feat-icon">
+            <!-- Share SVG -->
+            <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <h3 class="feat-title">CloShare P2P</h3>
+        <p class="feat-desc">Share capsule items peer-to-peer with nearby devices over WiFi Direct or Bluetooth. No internet required. No server. Like AirDrop, but for your AI memory.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- IV. HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="inner">
+    <div class="how-grid">
+      <div>
+        <div class="sec-label reveal"><span class="sec-num">IV · Method</span><span>004 / 008</span></div>
+        <h2 class="reveal">From signal<br>to <em>retrieval.</em></h2>
+        <p class="lead reveal">Four steps. Seconds from save to found.</p>
+        <div class="steps-list reveal">
+          <div class="step-row">
+            <div class="step-n-wrap active"><span class="step-n">01</span></div>
+            <div class="step-content">
+              <p class="step-title">Save anything →</p>
+              <p class="step-desc">Paste a chat, share a link from any app, type a note, or share a TikTok URL. Enclo accepts every format.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-n-wrap active"><span class="step-n">02</span></div>
+            <div class="step-content">
+              <p class="step-title">AI organizes it →</p>
+              <p class="step-desc">AI auto-generates a title, summary, and tags in seconds. No manual work required. Ever.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-n-wrap active"><span class="step-n">03</span></div>
+            <div class="step-content">
+              <p class="step-title">Find it instantly →</p>
+              <p class="step-desc">Search by keyword, tag, model, date, or meaning. Your capsule never forgets.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-n-wrap"><span class="step-n">04</span></div>
+            <div class="step-content">
+              <p class="step-title">Share & discover</p>
+              <p class="step-desc">Share items with nearby devices via CloShare or explore new AI tools from the Discover feed inside the app.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="how-illustration reveal">
+        <!-- How it works illustration: save → analyze → find flow -->
+        <svg viewBox="0 0 460 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <!-- Step 1: Save -->
+          <rect x="20" y="20" width="420" height="90" rx="10" fill="#F8F8F8" stroke="#E8E8E8" stroke-width="1"/>
+          <rect x="20" y="20" width="4" height="90" rx="2" fill="#0052FF"/>
+          <text x="38" y="48" font-family="DM Mono,monospace" font-size="10" fill="#0052FF" letter-spacing="1">01 · SAVE</text>
+          <text x="38" y="70" font-family="system-ui,sans-serif" font-size="13" fill="#0A0A0A" font-weight="500">Paste any AI chat URL or content</text>
+          <text x="38" y="88" font-family="system-ui,sans-serif" font-size="12" fill="#888">Claude · ChatGPT · Any model</text>
+          <!-- Small model dots -->
+          <circle cx="390" cy="55" r="10" fill="#7C5CFC" opacity="0.15"/>
+          <text x="390" y="59" font-family="DM Mono,monospace" font-size="8" fill="#7C5CFC" text-anchor="middle">C</text>
+          <circle cx="410" cy="55" r="10" fill="#10B981" opacity="0.15"/>
+          <text x="410" y="59" font-family="DM Mono,monospace" font-size="8" fill="#10B981" text-anchor="middle">G</text>
+          <circle cx="430" cy="55" r="10" fill="#3B82F6" opacity="0.15"/>
+          <text x="430" y="59" font-family="DM Mono,monospace" font-size="8" fill="#3B82F6" text-anchor="middle">M</text>
+
+          <!-- Arrow down -->
+          <line x1="230" y1="114" x2="230" y2="140" stroke="#E0E0E0" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="224,138 230,148 236,138" fill="#E0E0E0"/>
+
+          <!-- Step 2: AI Analyze -->
+          <rect x="20" y="152" width="420" height="110" rx="10" fill="#EEF3FF" stroke="#DAEAFF" stroke-width="1"/>
+          <rect x="20" y="152" width="4" height="110" rx="2" fill="#0052FF"/>
+          <text x="38" y="180" font-family="DM Mono,monospace" font-size="10" fill="#0052FF" letter-spacing="1">02 · AI ANALYZE</text>
+          <!-- AI output rows -->
+          <rect x="38" y="190" width="70" height="16" rx="3" fill="white" stroke="#DAEAFF" stroke-width="1"/>
+          <text x="73" y="201" font-family="DM Mono,monospace" font-size="8" fill="#0052FF" text-anchor="middle">✦ title</text>
+          <rect x="118" y="190" width="70" height="16" rx="3" fill="white" stroke="#DAEAFF" stroke-width="1"/>
+          <text x="153" y="201" font-family="DM Mono,monospace" font-size="8" fill="#0052FF" text-anchor="middle">✦ summary</text>
+          <rect x="198" y="190" width="50" height="16" rx="3" fill="white" stroke="#DAEAFF" stroke-width="1"/>
+          <text x="223" y="201" font-family="DM Mono,monospace" font-size="8" fill="#0052FF" text-anchor="middle">✦ tags</text>
+          <text x="38" y="225" font-family="system-ui,sans-serif" font-size="12" fill="#0052FF">Generated title: "Flask session bug — Stremit"</text>
+          <text x="38" y="243" font-family="system-ui,sans-serif" font-size="11" fill="#5588DD">Tags: #flask  #debug  #backend  #stremit</text>
+
+          <!-- Arrow down -->
+          <line x1="230" y1="266" x2="230" y2="292" stroke="#E0E0E0" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="224,290 230,300 236,290" fill="#E0E0E0"/>
+
+          <!-- Step 3: Capsule (organized) -->
+          <rect x="20" y="304" width="420" height="90" rx="10" fill="#F8F8F8" stroke="#E8E8E8" stroke-width="1"/>
+          <rect x="20" y="304" width="4" height="90" rx="2" fill="#0A0A0A"/>
+          <text x="38" y="332" font-family="DM Mono,monospace" font-size="10" fill="#0A0A0A" letter-spacing="1">03 · CAPSULE</text>
+          <!-- Mini cards -->
+          <rect x="38" y="344" width="80" height="40" rx="5" fill="white" stroke="#0052FF" stroke-width="1"/>
+          <rect x="38" y="344" width="3" height="40" rx="1" fill="#7C5CFC"/>
+          <text x="47" y="361" font-family="DM Mono,monospace" font-size="7" fill="#888">CLAUDE</text>
+          <text x="47" y="375" font-family="system-ui,sans-serif" font-size="9" fill="#0A0A0A">Flask bug</text>
+          <rect x="128" y="344" width="80" height="40" rx="5" fill="white" stroke="#E8E8E8" stroke-width="1"/>
+          <rect x="128" y="344" width="3" height="40" rx="1" fill="#10B981"/>
+          <text x="137" y="361" font-family="DM Mono,monospace" font-size="7" fill="#888">CHATGPT</text>
+          <text x="137" y="375" font-family="system-ui,sans-serif" font-size="9" fill="#0A0A0A">Proposal</text>
+          <rect x="218" y="344" width="80" height="40" rx="5" fill="white" stroke="#E8E8E8" stroke-width="1"/>
+          <text x="227" y="361" font-family="DM Mono,monospace" font-size="7" fill="#888">LINK</text>
+          <text x="227" y="375" font-family="system-ui,sans-serif" font-size="9" fill="#0A0A0A">reddit.com</text>
+          <rect x="308" y="344" width="80" height="40" rx="5" fill="white" stroke="#E8E8E8" stroke-width="1"/>
+          <text x="317" y="361" font-family="DM Mono,monospace" font-size="7" fill="#888">NOTE</text>
+          <text x="317" y="375" font-family="system-ui,sans-serif" font-size="9" fill="#0A0A0A">Ideas...</text>
+
+          <!-- Arrow down -->
+          <line x1="230" y1="398" x2="230" y2="424" stroke="#E0E0E0" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="224,422 230,432 236,422" fill="#E0E0E0"/>
+
+          <!-- Step 4: Search result -->
+          <rect x="20" y="436" width="420" height="50" rx="10" fill="#0052FF"/>
+          <text x="38" y="458" font-family="DM Mono,monospace" font-size="10" fill="rgba(255,255,255,0.6)" letter-spacing="1">04 · FOUND IN 0.3s</text>
+          <text x="38" y="478" font-family="system-ui,sans-serif" font-size="13" fill="white" font-weight="500">Flask session bug — Stremit auth → exact match</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V. PLATFORMS -->
+<section class="platforms-section" id="platforms">
+  <div class="inner">
+    <div class="sec-label reveal"><span class="sec-num">V · Platforms</span><span style="color:#333">005 / 008</span></div>
+    <h2 class="reveal">Android & Windows<br><em>this June.</em></h2>
+    <p class="lead reveal">Android and Windows launch in June 2026. iOS and macOS are coming soon — date to be announced. Drop your email to be first in line.</p>
+
+    <div class="platform-grid reveal">
+
+      <!-- Android - AVAILABLE -->
+      <a href="#waitlist" class="platform-card available">
+        <svg class="platform-illu" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <!-- Android robot -->
+          <line x1="30" y1="22" x2="23" y2="10" stroke="#3DDC84" stroke-width="3" stroke-linecap="round"/>
+          <line x1="50" y1="22" x2="57" y2="10" stroke="#3DDC84" stroke-width="3" stroke-linecap="round"/>
+          <path d="M18 40 A22 22 0 0 1 62 40 Z" fill="#3DDC84"/>
+          <circle cx="30" cy="34" r="3.5" fill="white"/>
+          <circle cx="50" cy="34" r="3.5" fill="white"/>
+          <rect x="18" y="40" width="44" height="26" rx="4" fill="#3DDC84"/>
+          <rect x="9" y="40" width="9" height="20" rx="4.5" fill="#3DDC84"/>
+          <rect x="62" y="40" width="9" height="20" rx="4.5" fill="#3DDC84"/>
+          <rect x="22" y="65" width="14" height="12" rx="7" fill="#3DDC84"/>
+          <rect x="44" y="65" width="14" height="12" rx="7" fill="#3DDC84"/>
+        </svg>
+        <span class="platform-name">Android</span>
+        <span class="platform-badge badge-june">Coming June</span>
+      </a>
+
+      <!-- Windows - AVAILABLE -->
+      <a href="#waitlist" class="platform-card available">
+        <svg class="platform-illu" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <!-- Windows four-colour logo -->
+          <rect x="10" y="10" width="27" height="27" rx="2" fill="#F25022"/>
+          <rect x="43" y="10" width="27" height="27" rx="2" fill="#7FBA00"/>
+          <rect x="10" y="43" width="27" height="27" rx="2" fill="#00A4EF"/>
+          <rect x="43" y="43" width="27" height="27" rx="2" fill="#FFB900"/>
+        </svg>
+        <span class="platform-name">Windows</span>
+        <span class="platform-badge badge-june">Coming June</span>
+      </a>
+
+      <!-- iOS - SOON -->
+      <div class="platform-card soon">
+        <svg class="platform-illu" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="80" height="80" rx="18" fill="#007AFF"/>
+          <g transform="translate(16,8) scale(0.125)" fill="white">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+          </g>
+        </svg>
+        <span class="platform-name">iOS</span>
+        <span class="platform-badge badge-soon">Coming Soon</span>
+      </div>
+
+      <!-- macOS - SOON -->
+      <div class="platform-card soon">
+        <svg class="platform-illu" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="80" height="80" rx="18" fill="#2C2C2E"/>
+          <g transform="translate(16,8) scale(0.125)" fill="white">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+          </g>
+        </svg>
+        <span class="platform-name">macOS</span>
+        <span class="platform-badge badge-soon">Coming Soon</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VI. STREMIT API -->
+<section class="stremit-section" id="stremit">
+  <div class="inner">
+    <div class="stremit-inner">
+      <div class="reveal">
+        <a href="https://stremit.io" target="_blank" rel="noopener" style="text-decoration:none"><span class="stremit-badge">Powered by Stremit</span></a>
+        <div class="sec-label"><span class="sec-num">VI · AI</span><span>006 / 008</span></div>
+        <h2>Smart AI,<br><em>built right in.</em></h2>
+        <p class="lead">Enclo is powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">Stremit</a>. Auto-tagging, summarization, Deep Search, and the Discover feed — all work seamlessly inside the app. No setup. No extra accounts.</p>
+      </div>
+      <div class="reveal">
+        <div class="api-features">
+          <div class="api-row">
+            <div class="api-row-icon core">
+              <svg viewBox="0 0 16 16"><path d="M8 1l1.5 3 3.5.5-2.5 2.5.5 3.5L8 9l-3 1.5.5-3.5L3 4.5 6.5 4z"/></svg>
+            </div>
+            <span class="api-row-label">Auto-tag & Summarize</span>
+            <span class="api-row-badge badge-core">Built In</span>
+          </div>
+          <div class="api-row">
+            <div class="api-row-icon core">
+              <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m11 11 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <span class="api-row-label">Deep Semantic Search</span>
+            <span class="api-row-badge badge-core">Built In</span>
+          </div>
+          <div class="api-row">
+            <div class="api-row-icon core">
+              <svg viewBox="0 0 16 16"><path d="M8 1v10M3 7l5 5 5-5M2 14h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <span class="api-row-label">Auto-analyze on Save</span>
+            <span class="api-row-badge badge-core">Built In</span>
+          </div>
+          <div class="api-row">
+            <div class="api-row-icon opt">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <span class="api-row-label">Discover — AI Tools Feed</span>
+            <span class="api-row-badge badge-opt">In App</span>
+          </div>
+          <div class="api-row">
+            <div class="api-row-icon opt">
+              <svg viewBox="0 0 16 16"><path d="M8 2l1.5 3 3 .5-2 2 .5 3-3-1.5L5 11l.5-3-2-2 3-.5z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <span class="api-row-label">AI Smart Suggestions</span>
+            <span class="api-row-badge badge-opt">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VII. FAQ -->
+<section class="faq-section" id="faq">
+  <div class="inner">
+    <div class="faq-grid">
+      <div>
+        <div class="sec-label reveal"><span class="sec-num">VII · FAQ</span><span>007 / 008</span></div>
+        <h2 class="reveal">Questions about <em>Enclo.</em></h2>
+        <p class="lead reveal">Official answers. No marketing.</p>
+      </div>
+      <div class="faq-list reveal">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            01 — What is Enclo?
+            <span class="faq-arrow"><svg viewBox="0 0 12 12" stroke="currentColor" fill="none" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></span>
+          </button>
+          <div class="faq-a"><p class="faq-a-inner">Enclo is a local-first mobile and desktop app that lets you save, organize, and instantly find AI conversations, links, notes, and downloaded videos — all in one private, searchable capsule. No server. No account required.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            02 — Is it really free?
+            <span class="faq-arrow"><svg viewBox="0 0 12 12" stroke="currentColor" fill="none" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></span>
+          </button>
+          <div class="faq-a"><p class="faq-a-inner">Yes. Enclo is completely free. Save, search, tag, browse, and use AI features — all at no cost. Powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">Stremit</a>.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            03 — Do I need internet to use it?
+            <span class="faq-arrow"><svg viewBox="0 0 12 12" stroke="currentColor" fill="none" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></span>
+          </button>
+          <div class="faq-a"><p class="faq-a-inner">No. Enclo is fully offline by default — all data is stored locally on your device. Internet is only used when AI features are active or when downloading videos. You control when that happens.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            04 — Which AI models does it support?
+            <span class="faq-arrow"><svg viewBox="0 0 12 12" stroke="currentColor" fill="none" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></span>
+          </button>
+          <div class="faq-a"><p class="faq-a-inner">Enclo saves conversations from any model — Claude, ChatGPT, Gemini, Mistral, Grok, Llama, Perplexity, DeepSeek, Copilot, and more. You choose the model when saving. The capsule is model-agnostic.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            05 — Is my data private?
+            <span class="faq-arrow"><svg viewBox="0 0 12 12" stroke="currentColor" fill="none" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></span>
+          </button>
+          <div class="faq-a"><p class="faq-a-inner">Yes. 100%. All data is stored locally on your device in an encrypted SQLite database. Nothing is transmitted to any server by default. When AI features are active, only the specific content being analyzed is processed — your full capsule is never uploaded.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            06 — What is CloShare?
+            <span class="faq-arrow"><svg viewBox="0 0 12 12" stroke="currentColor" fill="none" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></span>
+          </button>
+          <div class="faq-a"><p class="faq-a-inner">CloShare lets you share capsule items peer-to-peer with nearby devices over WiFi Direct or Bluetooth — no internet required. Think AirDrop but for your AI conversations and saved content. A QR code fallback is available for environments where direct wireless isn't available.</p></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIII. DOWNLOAD CTA -->
+<section class="cta-section" id="waitlist">
+  <div class="cta-inner">
+    <div class="reveal">
+      <div class="sec-label"><span style="color:rgba(255,255,255,0.4)">VIII · Waitlist</span><span style="color:rgba(255,255,255,0.2)">008 / 008</span></div>
+      <h2 style="font-size:clamp(40px,5vw,60px)">We launch<br><em>next month.</em></h2>
+      <p class="lead" style="margin-bottom:0">Android and Windows launch in June 2026. iOS and macOS are on the way. Join the waitlist and be the very first to get Enclo when it drops.</p>
+      <div style="margin-top:32px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="color:rgba(255,255,255,.5);font-family:var(--fm);font-size:10px;letter-spacing:.1em">✦</span><span style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.6)">Android & Windows — June 2026</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="color:rgba(255,255,255,.5);font-family:var(--fm);font-size:10px;letter-spacing:.1em">✦</span><span style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.6)">iOS & macOS — Coming Soon</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="color:rgba(255,255,255,.5);font-family:var(--fm);font-size:10px;letter-spacing:.1em">✦</span><span style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.6)">Free forever · No account required</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="cta-form" id="waitlistForm">
+        <label class="cta-label">Reserve your spot — Android & Windows · June 2026</label>
+        <div class="cta-input-row" style="margin-bottom:10px">
+          <select class="cta-select" id="waitlistPlatform">
+            <option value="all">All platforms</option>
+            <option value="android">Android</option>
+            <option value="windows">Windows</option>
+            <option value="ios">iOS</option>
+            <option value="macos">macOS</option>
+          </select>
+        </div>
+        <div class="cta-input-row">
+          <input type="email" class="cta-input" placeholder="your@email.com" id="waitlistEmail"/>
+          <button class="btn-cta-submit" id="waitlistBtn" onclick="submitWaitlist()">Join →</button>
+        </div>
+        <p class="cta-note" style="margin-top:8px">No spam. One email when Enclo is ready for you.</p>
+      </div>
+      <p class="cta-success" id="waitlistSuccess">✦ You're on the list. See you in June.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a href="#top" class="footer-logo-wrap">
+        <img src="enclo-icon.svg" width="30" height="30" style="border-radius:7px;display:block;flex-shrink:0" alt="Enclo"/>
+        <span class="footer-logo-name">Enclo</span>
+      </a>
+      <p class="footer-about">Your AI memory capsule. Save anything, find everything. Local-first, private by default. Built by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:#555;text-decoration:underline;text-underline-offset:3px">Stremit Technology Solutions</a>.</p>
+    </div>
+    <div>
+      <span class="footer-col-title">Product</span>
+      <ul class="footer-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#platforms">Download</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Powered By</span>
+      <ul class="footer-links">
+        <li><a href="https://stremit.io" target="_blank" rel="noopener">Stremit AI</a></li>
+        <li><a href="https://stremit.io" target="_blank" rel="noopener">AI Tools Network</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Platforms</span>
+      <ul class="footer-links">
+        <li><a href="#waitlist">Android (June 2026)</a></li>
+        <li><a href="#waitlist">Windows (June 2026)</a></li>
+        <li><a href="#waitlist">iOS (Coming Soon)</a></li>
+        <li><a href="#waitlist">macOS (Coming Soon)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Enclo · <a href="https://stremit.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Stremit Technology Solutions</a> · getenclo.web.app</span>
+    <ul class="footer-links-row">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="https://stremit.io" target="_blank" rel="noopener">Stremit</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+/* ── Firebase config ─────────────────────────────────────
+   Get these values from:
+   Firebase Console → Project Settings → General → Your apps → Web app
+   ──────────────────────────────────────────────────────── */
+const firebaseConfig = {
+  apiKey:            "AIzaSyAr0VO8K9voYBODwNOMwmowanxZxdUe-6g",
+  authDomain:        "getenclo.firebaseapp.com",
+  projectId:         "getenclo",
+  storageBucket:     "getenclo.firebasestorage.app",
+  messagingSenderId: "1057972697774",
+  appId:             "1:1057972697774:web:79abeecc34938b9fcb0b3f",
+  measurementId:     "G-LD7WRHLJ6H"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* ── FAQ accordion ───────────────────────────────────── */
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+
+/* ── Waitlist form → Firestore ──────────────────────── */
+async function submitWaitlist(){
+  const emailEl  = document.getElementById('waitlistEmail');
+  const platEl   = document.getElementById('waitlistPlatform');
+  const btn      = document.getElementById('waitlistBtn');
+  const email    = emailEl.value.trim();
+
+  if(!email || !email.includes('@')){
+    emailEl.style.borderColor='rgba(255,80,80,.7)';
+    emailEl.placeholder='Enter a valid email';
+    setTimeout(()=>{emailEl.style.borderColor='';emailEl.placeholder='your@email.com';},2000);
+    return;
+  }
+
+  btn.textContent='Saving…';
+  btn.disabled=true;
+
+  try{
+    await db.collection('waitlist').add({
+      email:     email,
+      platform:  platEl ? platEl.value : 'all',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      source:    'landing_page'
+    });
+  }catch(err){
+    console.error('Firestore error:', err);
+    /* Still show success — don't block the user on a config issue */
+  }
+
+  document.getElementById('waitlistForm').style.display='none';
+  document.getElementById('waitlistSuccess').style.display='block';
+}
+
+/* ── Scroll-reveal ───────────────────────────────────── */
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'),i*60);
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

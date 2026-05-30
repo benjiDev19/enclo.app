@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+
+  <!-- White background rounded square -->
+  <rect width="1024" height="1024" rx="224" fill="#FFFFFF"/>
+
+  <!-- Left bracket — black -->
+  <path d="M 348 268 L 280 268 L 280 512" fill="none" stroke="#0A0A0A" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 280 512 L 280 756 L 348 756" fill="none" stroke="#0A0A0A" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Right bracket — black -->
+  <path d="M 676 268 L 744 268 L 744 512" fill="none" stroke="#0A0A0A" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 744 512 L 744 756 L 676 756" fill="none" stroke="#0A0A0A" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Top capsule — blue -->
+  <rect x="356" y="284" width="312" height="108" rx="54" fill="#0052FF"/>
+  <line x1="356" y1="338" x2="668" y2="338" stroke="#FFFFFF" stroke-width="8"/>
+  <circle cx="436" cy="338" r="10" fill="#FFFFFF"/>
+  <circle cx="512" cy="338" r="10" fill="#FFFFFF"/>
+  <circle cx="588" cy="338" r="10" fill="#FFFFFF"/>
+
+  <!-- Middle capsule — black -->
+  <rect x="356" y="458" width="312" height="108" rx="54" fill="#0A0A0A"/>
+  <line x1="356" y1="512" x2="668" y2="512" stroke="#FFFFFF" stroke-width="8"/>
+  <circle cx="436" cy="512" r="10" fill="#FFFFFF"/>
+  <circle cx="512" cy="512" r="10" fill="#FFFFFF"/>
+  <circle cx="588" cy="512" r="10" fill="#FFFFFF"/>
+
+  <!-- Bottom capsule — ghost blue -->
+  <rect x="356" y="632" width="312" height="108" rx="54" fill="#0052FF" opacity="0.18"/>
+  <line x1="356" y1="686" x2="668" y2="686" stroke="#FFFFFF" stroke-width="6"/>
+  <circle cx="436" cy="686" r="8" fill="#FFFFFF"/>
+  <circle cx="512" cy="686" r="8" fill="#FFFFFF"/>
+  <circle cx="588" cy="686" r="8" fill="#FFFFFF"/>
+
+</svg>
