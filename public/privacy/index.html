@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Privacy Policy — Enclo</title>
+<meta name="description" content="How Enclo handles your data: local-first storage, optional AI features, anonymous analytics, and your controls."/>
+<meta property="og:title" content="Privacy Policy — Enclo"/>
+<meta property="og:description" content="How Enclo handles your data: local-first storage, optional AI features, anonymous analytics, and your controls."/>
+<meta property="og:url" content="https://getenclo.web.app/privacy"/>
+<meta name="theme-color" content="#0A0A0A"/>
+<meta name="robots" content="index,follow"/>
+<link rel="icon" type="image/svg+xml" href="../enclo-icon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--black:#0A0A0A;--white:#FFFFFF;--blue:#0052FF;--blue-dk:#003FCC;
+--blue-lt:#EEF3FF;--blue-mid:#DAEAFF;
+--gray-50:#F8F8F8;--gray-100:#F0F0F0;--gray-200:#E0E0E0;
+--gray-400:#AAAAAA;--gray-600:#666666;--gray-800:#222222;
+--fd:'Times New Roman',Times,serif;
+--fm:'DM Mono','Courier New',monospace;
+--fs:system-ui,-apple-system,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--black);font-family:var(--fs);font-size:16px;line-height:1.6}
+
+/* ── NAV (matches main site) ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-200);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-name{font-family:var(--fm);font-size:15px;font-weight:500;color:var(--black);letter-spacing:-.01em}
+.nav-back{font-family:var(--fm);font-size:11px;color:var(--gray-600);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .15s}
+.nav-back:hover{color:var(--black)}
+
+/* ── LEGAL CONTENT ── */
+.legal-wrap{max-width:720px;margin:0 auto;padding:72px 24px 96px}
+.sec-label{font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gray-400);margin-bottom:16px}
+.sec-label span{color:var(--blue)}
+h1.legal-title{font-family:var(--fd);font-size:clamp(32px,5vw,44px);font-weight:400;line-height:1.1;letter-spacing:-.02em;color:var(--black);margin-bottom:8px}
+.legal-updated{font-family:var(--fm);font-size:11px;color:var(--gray-400);letter-spacing:.05em;margin-bottom:48px}
+.legal-body h2{font-family:var(--fd);font-size:22px;font-weight:400;color:var(--black);margin:40px 0 14px;line-height:1.3}
+.legal-body p{font-size:15px;color:var(--gray-600);line-height:1.75;margin-bottom:14px}
+.legal-body ul{margin:0 0 14px 0;padding-left:20px}
+.legal-body li{font-size:15px;color:var(--gray-600);line-height:1.75;margin-bottom:8px}
+.legal-body strong{color:var(--black);font-weight:600}
+.legal-body a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+.legal-body{border-top:1px solid var(--gray-200);padding-top:8px}
+
+/* ── FOOTER (slim) ── */
+footer{background:var(--black);padding:40px 48px}
+.footer-bottom{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-copy{font-family:var(--fm);font-size:10px;color:#333;letter-spacing:.08em}
+.footer-links-row{display:flex;gap:24px;list-style:none}
+.footer-links-row a{font-family:var(--fm);font-size:10px;color:#333;text-decoration:none;letter-spacing:.08em;transition:color .15s}
+.footer-links-row a:hover{color:#666}
+.footer-links-row a.current{color:var(--blue)}
+
+@media(max-width:600px){
+  nav{padding:0 20px}
+  .legal-wrap{padding:48px 20px 64px}
+  footer{padding:32px 20px}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="../enclo-icon.svg" width="30" height="30" style="border-radius:7px;display:block;flex-shrink:0" alt="Enclo"/>
+    <span class="nav-name">Enclo</span>
+  </a>
+  <a href="/" class="nav-back">← Back to site</a>
+</nav>
+
+<div class="legal-wrap">
+  <div class="sec-label">Legal <span>·</span> Privacy</div>
+  <h1 class="legal-title">Privacy Policy</h1>
+  <p class="legal-updated">Effective date: June 17, 2026</p>
+
+  <div class="legal-body">
+    <p>This Privacy Policy explains how Enclo ("<strong>Enclo</strong>," "<strong>we</strong>," "<strong>us</strong>"), a product of Stremit Technology Solutions, handles information when you use the Enclo mobile and desktop application (the "<strong>App</strong>").</p>
+    <p>Enclo is built to be <strong>local-first</strong>: your conversations, links, notes, and files are stored in a private database on your own device. Enclo does not operate a central server that stores your vault contents. Where the App does send data over the network — for AI features, the Discover catalog, device pairing, or anonymous analytics — those flows are described below.</p>
+
+    <h2>1. Information stored only on your device</h2>
+    <ul>
+      <li><strong>Vault data.</strong> Saved chats, links, notes, tags, and attached files are stored in a local database on your device. This data is never uploaded to any Enclo-operated server.</li>
+      <li><strong>App Lock.</strong> If you enable App Lock, authentication (fingerprint, Face ID, face unlock, or device PIN/pattern/passcode) is handled entirely by your device's operating system. Enclo never receives, stores, or transmits your biometric data.</li>
+      <li><strong>Settings and preferences</strong>, including your API keys, are stored locally using your device's secure local storage.</li>
+    </ul>
+
+    <h2>2. Information used for AI features (you control this)</h2>
+    <p>Enclo's AI features (chat replies, AI summaries, AI auto-reply drafts, Discover) work by sending the relevant text directly from your device to the Stremit API (stremit.io) using your Stremit API key:</p>
+    <ul>
+      <li><strong>Stremit API.</strong> AI chat, AI summaries, the Discover tab, and other AI features call the Stremit API using your Stremit API key. Requests go directly from your device to Stremit. Enclo does not separately log or store the content of these requests. Stremit's handling of that data is governed by Stremit's own privacy policy.</li>
+      <li><strong>AI auto-reply</strong> (optional, off by default) reads the text of an incoming notification to draft a suggested reply via the Stremit API. The draft is placed in the reply field for you to review — Enclo never sends a reply on your behalf without you tapping send.</li>
+    </ul>
+
+    <h2>3. Information shared when you use CloShare or Sync</h2>
+    <p>CloShare and Sync let you share items or keep a vault in sync with another device you control:</p>
+    <ul>
+      <li><strong>Direct connections.</strong> When both devices are reachable on the same network (Wi-Fi/LAN) or via Bluetooth, data is sent directly between the two devices and does not pass through any Enclo server.</li>
+      <li><strong>Internet relay.</strong> When a direct connection isn't possible, Enclo's relay server forwards encrypted message frames between your two devices so they can connect over the internet. The relay server is a blind relay: it never decrypts or reads the content being exchanged, and idle pairing sessions expire automatically within minutes.</li>
+    </ul>
+
+    <h2>4. Anonymous analytics</h2>
+    <p>Enclo uses Aptabase to collect anonymous, aggregate product analytics (such as which screens are opened or which features are used) to help us fix bugs and improve the App. This data:</p>
+    <ul>
+      <li>Does <strong>not</strong> include your name, email, vault contents, messages, files, or any other personal or identifiable content.</li>
+      <li>Is <strong>not</strong> used for advertising or sold to third parties.</li>
+      <li>Can be turned off at any time in Settings. Analytics is on by default and can be disabled with a single toggle.</li>
+    </ul>
+
+    <h2>5. Device permissions</h2>
+    <p>Depending on the features you use, Enclo may request:</p>
+    <ul>
+      <li><strong>Camera</strong> — to scan QR codes when pairing devices for CloShare.</li>
+      <li><strong>Bluetooth and nearby-device permissions</strong> — to discover nearby devices for CloShare/Sync. On Android, the operating system requires "location"-category permissions to perform Bluetooth scanning; Enclo does not access, track, or store your GPS location.</li>
+      <li><strong>Notifications</strong> — to enable optional features such as AI auto-reply, and to show the App's own notifications (e.g., sync status).</li>
+      <li><strong>Photos/media storage</strong> — to save images and videos you download to your device's gallery.</li>
+      <li><strong>Accessibility service</strong> ("Phone Control," optional, off by default) — lets a device you control read and interact with the screen of this device when you explicitly enable the feature and pair it with another device you own. This data only flows between your own paired devices and is never sent to Enclo.</li>
+      <li><strong>Display over other apps / overlay</strong> (optional, off by default) — used to show the floating control bubble for the Phone Control feature.</li>
+    </ul>
+    <p>You can review and revoke any of these permissions at any time in your device's system settings.</p>
+
+    <h2>6. Data retention and your choices</h2>
+    <ul>
+      <li>Your vault data stays on your device until you delete it, uninstall the App, or use the in-app export/delete tools.</li>
+      <li>You can export your library as JSON at any time from Settings.</li>
+      <li>Removing an API key from Settings immediately stops Enclo from using it.</li>
+      <li>Uninstalling the App removes its local data from your device (subject to your operating system's normal app-data handling).</li>
+    </ul>
+
+    <h2>7. Children's privacy</h2>
+    <p>Enclo is not directed at children under 13, and we do not knowingly collect personal information from children under 13.</p>
+
+    <h2>8. Changes to this policy</h2>
+    <p>We may update this Privacy Policy as the App evolves. Material changes will be reflected by an updated "Effective date" above, and where appropriate, a notice inside the App.</p>
+
+    <h2>9. Contact us</h2>
+    <p>Questions about this Privacy Policy? Contact us at <a href="mailto:hello@stremit.io">hello@stremit.io</a>.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Enclo · Stremit Technology Solutions · getenclo.web.app</span>
+    <ul class="footer-links-row">
+      <li><a href="/privacy" class="current">Privacy</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="https://stremit.io" target="_blank" rel="noopener">Stremit</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
