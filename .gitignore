@@ -67,3 +67,7 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Release binaries — large, rebuilt per release, deployed via `firebase deploy`
+# without ever needing to live in git history.
+/public/downloads/

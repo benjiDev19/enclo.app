@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Enclo — Your AI Memory Capsule</title>
+<title>Enclo - Your Personal Second Brain of Digital Content</title>
 <meta name="description" content="Save AI chats, links, notes, and videos. Find anything in seconds. Free, private, local-first."/>
-<meta property="og:title" content="Enclo — Your AI Memory Capsule"/>
+<meta property="og:title" content="Enclo - Your Personal Second Brain of Digital Content"/>
 <meta property="og:description" content="One capsule for every AI conversation, link, and note you've ever saved."/>
 <meta property="og:url" content="https://getenclo.web.app"/>
 <meta name="theme-color" content="#0A0A0A"/>
@@ -86,6 +86,9 @@ h1 em{font-style:italic}
 .ticker-item{font-family:var(--fm);font-size:12px;font-weight:500;letter-spacing:.1em;color:var(--gray-400);padding:0 28px;display:flex;align-items:center;gap:10px}
 .ticker-item strong{color:var(--white)}
 .ticker-dot{color:#333;font-size:6px}
+.ticker-logo{display:block;height:18px;width:auto;max-width:90px;object-fit:contain;flex-shrink:0}
+.ticker-chip{display:inline-flex;align-items:center;background:#fff;border-radius:6px;padding:3px 7px;flex-shrink:0}
+.ticker-chip img{display:block;height:14px;width:auto;max-width:72px;object-fit:contain}
 @keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── ABOUT ── */
@@ -94,6 +97,15 @@ h1 em{font-style:italic}
 .about-right{padding-top:8px}
 .about-quote{font-family:var(--fd);font-size:clamp(22px,3vw,32px);font-weight:400;line-height:1.3;color:var(--black);font-style:italic;margin-bottom:32px;border-left:3px solid var(--blue);padding-left:24px}
 .about-body{font-size:16px;color:var(--gray-600);line-height:1.75;margin-bottom:20px}
+.about-features{display:flex;flex-direction:column;gap:10px;margin:28px 0 32px}
+.about-feature{display:flex;align-items:flex-start;gap:12px;background:var(--blue-lt);border:1px solid var(--blue-mid);border-radius:10px;padding:12px 14px;transition:background .15s,border-color .15s}
+.about-feature:hover{background:var(--blue-mid);border-color:rgba(0,82,255,.3)}
+.about-feature-icon{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.about-feature-icon svg{width:11px;height:11px;stroke:white;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.about-feature-text{font-size:15.5px;color:var(--gray-800);line-height:1.5}
+.about-feature-text strong{color:var(--black)}
+.about-cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.about-cta-note{font-family:var(--fm);font-size:10px;color:var(--gray-400);letter-spacing:.08em}
 
 /* ── FEATURES ── */
 .features-section{background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
@@ -250,11 +262,11 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
-    <span><span class="topbar-dot"></span>Launching June 2026</span>
+    <span><span class="topbar-dot"></span>Available now</span>
     <span>Free · No account required</span>
   </div>
   <div class="topbar-right">
-    <span>Android & Windows — June 2026 · iOS & macOS — Coming Soon</span>
+    <span>Android & Windows — Available now · iOS & macOS — Coming Soon</span>
   </div>
 </div>
 
@@ -271,7 +283,7 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
     <li><a href="#stremit">AI Features</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <a href="#waitlist" class="nav-dl">Join Waitlist →</a>
+  <a href="#platforms" class="nav-dl">Download →</a>
 </nav>
 
 <!-- I. HERO -->
@@ -286,15 +298,15 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
       <h1>Your personal second brain<br><em>for digital content.</em></h1>
       <p class="hero-sub">One capsule for every AI chat, link, note and video you've ever saved. Powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:.8">Stremit AI</a>. Local-first. Completely private.</p>
       <div class="hero-btns">
-        <a href="#waitlist" class="btn-dl-primary">
+        <a href="#platforms" class="btn-dl-primary">
           <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
-          Join the Waitlist
+          Download Enclo
         </a>
-        <a href="#platforms" class="btn-dl-secondary">
-          View all platforms
+        <a href="#features" class="btn-dl-secondary">
+          See what's inside
         </a>
       </div>
-      <p class="hero-note">Android & Windows — June 2026 · iOS & macOS — Coming Soon · Free forever</p>
+      <p class="hero-note">Android & Windows — Available now · iOS & macOS — Coming Soon · Free forever</p>
       <div class="hero-stats">
         <div class="stat-item">
           <span class="stat-num">9</span>
@@ -329,100 +341,84 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
   <div class="ticker-track">
     <!-- First copy -->
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(120 12 12)"/></svg>
-      <strong>Claude</strong><span class="ticker-dot">●</span>
+      <img class="ticker-logo" src="logos/claude-ai-logo.svg" alt="Claude"/>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="white" style="flex-shrink:0"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.182a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.776.776 0 0 0 .781 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855-5.773-3.331 2.014-1.164a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.104v-5.677a.79.79 0 0 0-.407-.667zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.376-3.454l-.141.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
+      <span class="ticker-chip"><img src="logos/chatgpt-logo.svg" alt=""/></span>
       <strong>ChatGPT</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="#4285F4"/><path d="M12 5 L13 10.5 L18 12 L13 13.5 L12 19 L11 13.5 L6 12 L11 10.5 Z" fill="#9C27B0" opacity="0.6"/></svg>
+      <img class="ticker-logo" src="logos/google-gemini-logo.svg" alt=""/>
       <strong>Gemini</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect x="1" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="1" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="9" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="17" width="7" height="6" rx="1" fill="#FF7000"/><rect x="9" y="17" width="7" height="6" rx="1" fill="#FF7000"/></svg>
+      <img class="ticker-logo" src="logos/mistral-ai-logo.svg" alt=""/>
       <strong>Mistral</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" fill="white"/></svg>
+      <span class="ticker-chip"><img src="logos/grok-_-xai-logo.svg" alt=""/></span>
       <strong>Grok</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="7.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/><circle cx="16.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/></svg>
+      <span class="ticker-chip"><img src="logos/ollama-logo.svg" alt=""/></span>
       <strong>Llama</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect width="24" height="24" rx="5" fill="#1C3F5E"/><line x1="12" y1="3" x2="12" y2="21" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="7.5" x2="21" y2="16.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="16.5" x2="21" y2="7.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
-      <strong>Perplexity</strong><span class="ticker-dot">●</span>
+      <span class="ticker-chip"><img src="logos/perplexity-logo.svg" alt="Perplexity"/></span>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#4E6EF2"/><path d="M6 15 C6 11 8.5 8 12 8 C15.5 8 18 11 18 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="9" cy="16" r="1.5" fill="white"/><circle cx="15" cy="16" r="1.5" fill="white"/></svg>
-      <strong>DeepSeek</strong><span class="ticker-dot">●</span>
+      <img class="ticker-logo" src="logos/deepseek-logo.svg" alt="DeepSeek"/>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 A10 10 0 0 1 22 12" stroke="#CB43CC" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M22 12 A10 10 0 0 1 12 22" stroke="#EB5F32" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M12 22 A10 10 0 0 1 2 12" stroke="#F6B827" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M2 12 A10 10 0 0 1 12 2" stroke="#55C1EC" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
-      <strong>Copilot</strong><span class="ticker-dot">●</span>
+      <span class="ticker-chip"><img src="logos/microsoft-copilot-logo.svg" alt="Copilot"/></span>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="#7C4DFF"/></svg>
-      <strong>Gemma</strong><span class="ticker-dot">●</span>
-    </span>
-    <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10" fill="#D97E5B"/><path d="M16 12 A4 4 0 1 0 8 12 L8 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M14.8 8.8 L16 12 L12.8 13.5" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <strong>Command R</strong><span class="ticker-dot">●</span>
-    </span>
-    <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="11" cy="11" r="8.5" fill="none" stroke="#7B2FBE" stroke-width="2.5"/><line x1="17" y1="17" x2="21" y2="21" stroke="#7B2FBE" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <img class="ticker-logo" src="logos/qwen-ai-logo.svg" alt=""/>
       <strong>Qwen</strong><span class="ticker-dot">●</span>
     </span>
     <!-- Second copy (seamless loop) -->
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="3.5" ry="10" fill="#CC785C" transform="rotate(120 12 12)"/></svg>
-      <strong>Claude</strong><span class="ticker-dot">●</span>
+      <img class="ticker-logo" src="logos/claude-ai-logo.svg" alt="Claude"/>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="white" style="flex-shrink:0"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.182a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.776.776 0 0 0 .781 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855-5.773-3.331 2.014-1.164a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.104v-5.677a.79.79 0 0 0-.407-.667zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.376-3.454l-.141.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
+      <span class="ticker-chip"><img src="logos/chatgpt-logo.svg" alt=""/></span>
       <strong>ChatGPT</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="#4285F4"/><path d="M12 5 L13 10.5 L18 12 L13 13.5 L12 19 L11 13.5 L6 12 L11 10.5 Z" fill="#9C27B0" opacity="0.6"/></svg>
+      <img class="ticker-logo" src="logos/google-gemini-logo.svg" alt=""/>
       <strong>Gemini</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect x="1" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="1" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="1" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="9" y="9" width="7" height="7" rx="1" fill="#FF7000"/><rect x="17" y="9" width="6" height="7" rx="1" fill="#FF7000"/><rect x="1" y="17" width="7" height="6" rx="1" fill="#FF7000"/><rect x="9" y="17" width="7" height="6" rx="1" fill="#FF7000"/></svg>
+      <img class="ticker-logo" src="logos/mistral-ai-logo.svg" alt=""/>
       <strong>Mistral</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" fill="white"/></svg>
+      <span class="ticker-chip"><img src="logos/grok-_-xai-logo.svg" alt=""/></span>
       <strong>Grok</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="7.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/><circle cx="16.5" cy="12" r="5" fill="none" stroke="#0668E1" stroke-width="2.5"/></svg>
+      <span class="ticker-chip"><img src="logos/ollama-logo.svg" alt=""/></span>
       <strong>Llama</strong><span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><rect width="24" height="24" rx="5" fill="#1C3F5E"/><line x1="12" y1="3" x2="12" y2="21" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="7.5" x2="21" y2="16.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="16.5" x2="21" y2="7.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
-      <strong>Perplexity</strong><span class="ticker-dot">●</span>
+      <span class="ticker-chip"><img src="logos/perplexity-logo.svg" alt="Perplexity"/></span>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#4E6EF2"/><path d="M6 15 C6 11 8.5 8 12 8 C15.5 8 18 11 18 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><circle cx="9" cy="16" r="1.5" fill="white"/><circle cx="15" cy="16" r="1.5" fill="white"/></svg>
-      <strong>DeepSeek</strong><span class="ticker-dot">●</span>
+      <img class="ticker-logo" src="logos/deepseek-logo.svg" alt="DeepSeek"/>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 A10 10 0 0 1 22 12" stroke="#CB43CC" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M22 12 A10 10 0 0 1 12 22" stroke="#EB5F32" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M12 22 A10 10 0 0 1 2 12" stroke="#F6B827" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M2 12 A10 10 0 0 1 12 2" stroke="#55C1EC" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
-      <strong>Copilot</strong><span class="ticker-dot">●</span>
+      <span class="ticker-chip"><img src="logos/microsoft-copilot-logo.svg" alt="Copilot"/></span>
+      <span class="ticker-dot">●</span>
     </span>
     <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="#7C4DFF"/></svg>
-      <strong>Gemma</strong><span class="ticker-dot">●</span>
-    </span>
-    <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10" fill="#D97E5B"/><path d="M16 12 A4 4 0 1 0 8 12 L8 15" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M14.8 8.8 L16 12 L12.8 13.5" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <strong>Command R</strong><span class="ticker-dot">●</span>
-    </span>
-    <span class="ticker-item">
-      <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><circle cx="11" cy="11" r="8.5" fill="none" stroke="#7B2FBE" stroke-width="2.5"/><line x1="17" y1="17" x2="21" y2="21" stroke="#7B2FBE" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <img class="ticker-logo" src="logos/qwen-ai-logo.svg" alt=""/>
       <strong>Qwen</strong><span class="ticker-dot">●</span>
     </span>
   </div>
@@ -435,11 +431,33 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
       <div class="about-left reveal">
         <div class="sec-label"><span class="sec-num">II · About</span><span>002 / 008</span></div>
         <h2>We built Enclo because finding a past AI chat should take <em>seconds,</em> not hours.</h2>
+        <p class="lead" style="margin-top:8px">Everything you save, instantly searchable — across every model, every platform, every device.</p>
       </div>
       <div class="about-right reveal">
         <blockquote class="about-quote">"I spent 45 minutes looking for a conversation I had with Claude last week. Never again."</blockquote>
-        <p class="about-body">Enclo is a local-first mobile and desktop app that lets you save anything — AI conversations, social media links, articles, notes, and downloaded videos — into one private, searchable capsule.</p>
-        <p class="about-body">Nothing leaves your device. No account required. AI features are powered by <a href="https://stremit.io" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">Stremit</a> — seamlessly built into the app.</p>
+
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5 7-8"/></svg></div>
+            <span class="about-feature-text"><strong>Save anything</strong> — AI chats, social links, articles, notes, and videos, all in one capsule</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5 7-8"/></svg></div>
+            <span class="about-feature-text"><strong>Find it instantly</strong> — AI-powered Deep Search finds content by meaning, not just keywords</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5 7-8"/></svg></div>
+            <span class="about-feature-text"><strong>100% private</strong> — local-first storage, nothing leaves your device, no account required</span>
+          </div>
+        </div>
+
+        <div class="about-cta-row">
+          <a href="#platforms" class="btn-dl-primary">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
+            Download Enclo
+          </a>
+          <span class="about-cta-note">Available now · Free forever</span>
+        </div>
       </div>
     </div>
   </div>
@@ -641,8 +659,8 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
           <text x="153" y="201" font-family="DM Mono,monospace" font-size="8" fill="#0052FF" text-anchor="middle">✦ summary</text>
           <rect x="198" y="190" width="50" height="16" rx="3" fill="white" stroke="#DAEAFF" stroke-width="1"/>
           <text x="223" y="201" font-family="DM Mono,monospace" font-size="8" fill="#0052FF" text-anchor="middle">✦ tags</text>
-          <text x="38" y="225" font-family="system-ui,sans-serif" font-size="12" fill="#0052FF">Generated title: "Flask session bug — Stremit"</text>
-          <text x="38" y="243" font-family="system-ui,sans-serif" font-size="11" fill="#5588DD">Tags: #flask  #debug  #backend  #stremit</text>
+          <text x="38" y="225" font-family="system-ui,sans-serif" font-size="12" fill="#0052FF">Generated title: "Paris Trip — 5-Day Itinerary"</text>
+          <text x="38" y="243" font-family="system-ui,sans-serif" font-size="11" fill="#5588DD">Tags: #travel  #paris  #itinerary</text>
 
           <!-- Arrow down -->
           <line x1="230" y1="266" x2="230" y2="292" stroke="#E0E0E0" stroke-width="1.5" stroke-dasharray="4 3"/>
@@ -656,7 +674,7 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
           <rect x="38" y="344" width="80" height="40" rx="5" fill="white" stroke="#0052FF" stroke-width="1"/>
           <rect x="38" y="344" width="3" height="40" rx="1" fill="#7C5CFC"/>
           <text x="47" y="361" font-family="DM Mono,monospace" font-size="7" fill="#888">CLAUDE</text>
-          <text x="47" y="375" font-family="system-ui,sans-serif" font-size="9" fill="#0A0A0A">Flask bug</text>
+          <text x="47" y="375" font-family="system-ui,sans-serif" font-size="9" fill="#0A0A0A">Paris trip</text>
           <rect x="128" y="344" width="80" height="40" rx="5" fill="white" stroke="#E8E8E8" stroke-width="1"/>
           <rect x="128" y="344" width="3" height="40" rx="1" fill="#10B981"/>
           <text x="137" y="361" font-family="DM Mono,monospace" font-size="7" fill="#888">CHATGPT</text>
@@ -675,7 +693,7 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
           <!-- Step 4: Search result -->
           <rect x="20" y="436" width="420" height="50" rx="10" fill="#0052FF"/>
           <text x="38" y="458" font-family="DM Mono,monospace" font-size="10" fill="rgba(255,255,255,0.6)" letter-spacing="1">04 · FOUND IN 0.3s</text>
-          <text x="38" y="478" font-family="system-ui,sans-serif" font-size="13" fill="white" font-weight="500">Flask session bug — Stremit auth → exact match</text>
+          <text x="38" y="478" font-family="system-ui,sans-serif" font-size="13" fill="white" font-weight="500">Paris Trip — 5-Day Itinerary → exact match</text>
         </svg>
       </div>
     </div>
@@ -686,13 +704,13 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
 <section class="platforms-section" id="platforms">
   <div class="inner">
     <div class="sec-label reveal"><span class="sec-num">V · Platforms</span><span style="color:#333">005 / 008</span></div>
-    <h2 class="reveal">Android & Windows<br><em>this June.</em></h2>
-    <p class="lead reveal">Android and Windows launch in June 2026. iOS and macOS are coming soon — date to be announced. Drop your email to be first in line.</p>
+    <h2 class="reveal">Android & Windows<br><em>available now.</em></h2>
+    <p class="lead reveal">Download Enclo free for Android and Windows today. iOS and macOS are coming soon — date to be announced.</p>
 
     <div class="platform-grid reveal">
 
       <!-- Android - AVAILABLE -->
-      <a href="#waitlist" class="platform-card available">
+      <a href="/downloads/Enclo-android.apk" class="platform-card available" onclick="trackDownload('android')">
         <svg class="platform-illu" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
           <!-- Android robot -->
           <line x1="30" y1="22" x2="23" y2="10" stroke="#3DDC84" stroke-width="3" stroke-linecap="round"/>
@@ -707,11 +725,11 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
           <rect x="44" y="65" width="14" height="12" rx="7" fill="#3DDC84"/>
         </svg>
         <span class="platform-name">Android</span>
-        <span class="platform-badge badge-june">Coming June</span>
+        <span class="platform-badge badge-live">Download .apk</span>
       </a>
 
       <!-- Windows - AVAILABLE -->
-      <a href="#waitlist" class="platform-card available">
+      <a href="/downloads/Enclo-windows-setup.exe" class="platform-card available" onclick="trackDownload('windows')">
         <svg class="platform-illu" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
           <!-- Windows four-colour logo -->
           <rect x="10" y="10" width="27" height="27" rx="2" fill="#F25022"/>
@@ -720,7 +738,7 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
           <rect x="43" y="43" width="27" height="27" rx="2" fill="#FFB900"/>
         </svg>
         <span class="platform-name">Windows</span>
-        <span class="platform-badge badge-june">Coming June</span>
+        <span class="platform-badge badge-live">Download .exe</span>
       </a>
 
       <!-- iOS - SOON -->
@@ -869,37 +887,34 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
 </section>
 
 <!-- VIII. DOWNLOAD CTA -->
-<section class="cta-section" id="waitlist">
+<section class="cta-section" id="download">
   <div class="cta-inner">
     <div class="reveal">
-      <div class="sec-label"><span style="color:rgba(255,255,255,0.4)">VIII · Waitlist</span><span style="color:rgba(255,255,255,0.2)">008 / 008</span></div>
-      <h2 style="font-size:clamp(40px,5vw,60px)">We launch<br><em>next month.</em></h2>
-      <p class="lead" style="margin-bottom:0">Android and Windows launch in June 2026. iOS and macOS are on the way. Join the waitlist and be the very first to get Enclo when it drops.</p>
-      <div style="margin-top:32px;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;align-items:center;gap:10px"><span style="color:rgba(255,255,255,.5);font-family:var(--fm);font-size:10px;letter-spacing:.1em">✦</span><span style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.6)">Android & Windows — June 2026</span></div>
-        <div style="display:flex;align-items:center;gap:10px"><span style="color:rgba(255,255,255,.5);font-family:var(--fm);font-size:10px;letter-spacing:.1em">✦</span><span style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.6)">iOS & macOS — Coming Soon</span></div>
-        <div style="display:flex;align-items:center;gap:10px"><span style="color:rgba(255,255,255,.5);font-family:var(--fm);font-size:10px;letter-spacing:.1em">✦</span><span style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.6)">Free forever · No account required</span></div>
+      <div class="sec-label"><span style="color:rgba(255,255,255,0.4)">VIII · Download</span><span style="color:rgba(255,255,255,0.2)">008 / 008</span></div>
+      <h2 style="font-size:clamp(40px,5vw,60px)">Available now<br><em>on Android & Windows.</em></h2>
+      <p class="lead" style="margin-bottom:0">Download Enclo free for Android and Windows today. iOS and macOS are on the way — leave your email and we'll let you know the moment they're ready.</p>
+      <div class="cta-btns">
+        <a href="/downloads/Enclo-windows-setup.exe" class="btn-cta-white">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
+          Download for Windows
+        </a>
+        <a href="/downloads/Enclo-android.apk" class="btn-cta-outline">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
+          Download for Android
+        </a>
       </div>
+      <p class="cta-note">Windows: unsigned installer — click "More info → Run anyway" on first launch. Android: allow "Install unknown apps" for your browser.</p>
     </div>
     <div class="reveal">
       <div class="cta-form" id="waitlistForm">
-        <label class="cta-label">Reserve your spot — Android & Windows · June 2026</label>
-        <div class="cta-input-row" style="margin-bottom:10px">
-          <select class="cta-select" id="waitlistPlatform">
-            <option value="all">All platforms</option>
-            <option value="android">Android</option>
-            <option value="windows">Windows</option>
-            <option value="ios">iOS</option>
-            <option value="macos">macOS</option>
-          </select>
-        </div>
+        <label class="cta-label">Get notified — iOS & macOS</label>
         <div class="cta-input-row">
           <input type="email" class="cta-input" placeholder="your@email.com" id="waitlistEmail"/>
-          <button class="btn-cta-submit" id="waitlistBtn" onclick="submitWaitlist()">Join →</button>
+          <button class="btn-cta-submit" id="waitlistBtn" onclick="submitWaitlist()">Notify me →</button>
         </div>
-        <p class="cta-note" style="margin-top:8px">No spam. One email when Enclo is ready for you.</p>
+        <p class="cta-note" style="margin-top:8px">No spam. One email when iOS/macOS is ready.</p>
       </div>
-      <p class="cta-success" id="waitlistSuccess">✦ You're on the list. See you in June.</p>
+      <p class="cta-success" id="waitlistSuccess">✦ You're on the list. We'll email you when it's ready.</p>
     </div>
   </div>
 </section>
@@ -933,10 +948,10 @@ footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid #1a1a
     <div>
       <span class="footer-col-title">Platforms</span>
       <ul class="footer-links">
-        <li><a href="#waitlist">Android (June 2026)</a></li>
-        <li><a href="#waitlist">Windows (June 2026)</a></li>
-        <li><a href="#waitlist">iOS (Coming Soon)</a></li>
-        <li><a href="#waitlist">macOS (Coming Soon)</a></li>
+        <li><a href="/downloads/Enclo-android.apk">Android</a></li>
+        <li><a href="/downloads/Enclo-windows-setup.exe">Windows</a></li>
+        <li><a href="#download">iOS (Coming Soon)</a></li>
+        <li><a href="#download">macOS (Coming Soon)</a></li>
       </ul>
     </div>
   </div>
@@ -983,7 +998,6 @@ function toggleFaq(btn){
 /* ── Waitlist form → Firestore ──────────────────────── */
 async function submitWaitlist(){
   const emailEl  = document.getElementById('waitlistEmail');
-  const platEl   = document.getElementById('waitlistPlatform');
   const btn      = document.getElementById('waitlistBtn');
   const email    = emailEl.value.trim();
 
@@ -1000,7 +1014,7 @@ async function submitWaitlist(){
   try{
     await db.collection('waitlist').add({
       email:     email,
-      platform:  platEl ? platEl.value : 'all',
+      platform:  'ios_macos',
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       source:    'landing_page'
     });
@@ -1011,6 +1025,19 @@ async function submitWaitlist(){
 
   document.getElementById('waitlistForm').style.display='none';
   document.getElementById('waitlistSuccess').style.display='block';
+}
+
+/* ── Download click tracking → Firestore ─────────────
+   Fire-and-forget: increments analytics/downloads.{platform}
+   and .total atomically. Doesn't block or delay the actual
+   file download/navigation that the <a href> triggers.
+   ──────────────────────────────────────────────────── */
+function trackDownload(platform){
+  db.collection('analytics').doc('downloads').set({
+    [platform]: firebase.firestore.FieldValue.increment(1),
+    total:      firebase.firestore.FieldValue.increment(1),
+    lastClick:  firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true }).catch(err=>console.error('Download tracking error:', err));
 }
 
 /* ── Scroll-reveal ───────────────────────────────────── */
