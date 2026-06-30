@@ -67,3 +67,6 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Large binary downloads (not meant for git history)
+public/downloads/
